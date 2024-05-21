@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Processor</title>
+</head>
+<body>
+    <h1>Upload Files</h1>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="file">File yang Ingin di proses:</label>
+            <input type="file" name="file" required>
+        </div>
+        <div>
+            <label for="comparisonFile">File Pembanding:</label>
+            <input type="file" name="comparisonFile" required>
+        </div>
+        <button type="submit">Upload</button>
+    </form>
+
+    <div id="result" style="display: none;">
+        <p>Baris Dihapus : <span id="removedLinesCount"></span></p>
+        <a id="downloadLink" href="#" download>Download File</a>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('removedLinesCount').textContent = result.removedLinesCount;
+                document.getElementById('downloadLink').href = result.downloadUrl;
+                document.getElementById('result').style.display = 'block';
+            } else {
+                alert('Error processing file: ' + result.error);
+            }
+        });
+    </script>
+</body>
+</html>
