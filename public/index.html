@@ -1,49 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Processor</title>
-</head>
-<body>
-    <h1>Upload Files</h1>
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="file">File yang Ingin di proses:</label>
-            <input type="file" name="file" required>
-        </div>
-        <div>
-            <label for="comparisonFile">File Pembanding:</label>
-            <input type="file" name="comparisonFile" required>
-        </div>
-        <button type="submit">Upload</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mr. Patrick</title>
+    <link rel="icon" type="image/x-icon" href="oy.ico" />
+  </head>
+  <style>
+    * {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      border-radius: 7px;
+      text-decoration: none;
+    }
+    body {
+      padding: 0 5vw;
+      background: #3d3d3d;
+      color: white;
+    }
+    button {
+      padding: 1vh 2vw;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.1s;
+      box-shadow: 2px 0px 10px rgb(192, 192, 192);
+    }
+    button:hover {
+      background: black;
+      color: white;
+    }
+    a {
+      background: white;
+      color: black;
+    }
+    a:hover {
+      background: black;
+      color: white;
+    }
+    label {
+      font-size: 20pt;
+    }
+  </style>
+  <body>
+    <h1>SFA Remover</h1>
+    <form
+      id="uploadForm"
+      action="/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label for="file">File yang Ingin di proses:</label>
+        <input type="file" name="file" required />
+      </div>
+      <br />
+      <div>
+        <label for="comparisonFile">File Pembanding:</label>
+        <input type="file" name="comparisonFile" required />
+      </div>
+      <br />
+      <button type="submit">Upload</button>
     </form>
 
-    <div id="result" style="display: none;">
-        <p>Baris Dihapus : <span id="removedLinesCount"></span></p>
-        <a id="downloadLink" href="#" download>Download File</a>
+    <h2>Deleted Product Handler</h2>
+    <form
+      id="addNewRowsForm"
+      action="/addNewRows"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label for="file">UNVGENIN File:</label>
+        <input type="file" name="file" required />
+      </div>
+      <br />
+      <div>
+        <label for="notificationFile">Notification File:</label>
+        <input type="file" name="notificationFile" required />
+      </div>
+      <br />
+      <button type="submit">Process</button>
+    </form>
+    <br />
+    <div id="addNewRowsResult" style="display: none">
+      <a style="padding: 1vh" id="addNewRowsDownloadLink" href="#" download
+        >Download Processed File</a
+      >
+    </div>
+
+    <div id="result" style="display: none">
+      <p>Baris Dihapus: <span id="removedLinesCount"></span></p>
+      <p>Kata Kunci yang Dihapus: <span id="removedKeywords"></span></p>
+      <p>
+        Kata Kunci dari Baris yang Tersisa: <span id="remainingKeywords"></span>
+      </p>
+      <a id="downloadLink" href="#" download>Download File</a>
     </div>
 
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-            const formData = new FormData(this);
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
+          const formData = new FormData(this);
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
 
-            const result = await response.json();
+          const result = await response.json();
 
-            if (result.success) {
-                document.getElementById('removedLinesCount').textContent = result.removedLinesCount;
-                document.getElementById('downloadLink').href = result.downloadUrl;
-                document.getElementById('result').style.display = 'block';
-            } else {
-                alert('Error processing file: ' + result.error);
-            }
+          if (result.success) {
+            document.getElementById("removedLinesCount").textContent =
+              result.removedLinesCount;
+            document.getElementById("removedKeywords").textContent =
+              result.removedKeywords.join(", ");
+            document.getElementById("remainingKeywords").textContent =
+              result.remainingKeywords.join(", ");
+            document.getElementById("downloadLink").href = result.downloadUrl;
+
+            document.getElementById("result").style.display = "block";
+          } else {
+            alert("Error processing file: " + result.error);
+          }
+        });
+
+      document
+        .getElementById("addNewRowsForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const response = await fetch("/addNewRows", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+          if (result.success) {
+            document.getElementById("addNewRowsDownloadLink").href =
+              result.downloadUrl;
+            document.getElementById("addNewRowsResult").style.display = "block";
+          } else {
+            alert("Error processing file: " + result.error);
+          }
         });
     </script>
-</body>
+  </body>
 </html>
