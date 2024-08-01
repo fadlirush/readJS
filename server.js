@@ -17,13 +17,13 @@ app.post(
     { name: "file", maxCount: 1 },
     { name: "comparisonFile", maxCount: 1 },
   ]),
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const inputFilePath = req.files.file[0].path;
       const comparisonFilePath = req.files.comparisonFile[0].path;
       const outputFilePath = path.join(
         "uploads",
-        `processed_${req.files.file[0].originalname}`
+        `${req.files.file[0].originalname}`
       );
 
       const comparisonKeywords = await readKeywords(comparisonFilePath);
@@ -44,8 +44,7 @@ app.post(
         downloadUrl: `/download/${path.basename(outputFilePath)}`,
       });
     } catch (err) {
-      console.error("Error processing file:", err);
-      res.status(500).json({ success: false, error: "Error processing file" });
+      next(err);
     }
   }
 );
@@ -56,13 +55,13 @@ app.post(
     { name: "file", maxCount: 1 },
     { name: "notificationFile", maxCount: 1 },
   ]),
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const inputFilePath = req.files.file[0].path;
       const notificationFilePath = req.files.notificationFile[0].path;
       const outputFilePath = path.join(
         "uploads",
-        `processed_new_rows_${req.files.file[0].originalname}`
+        `${req.files.file[0].originalname}`
       );
 
       await addNewRows(inputFilePath, notificationFilePath, outputFilePath);
@@ -72,8 +71,7 @@ app.post(
         downloadUrl: `/download/${path.basename(outputFilePath)}`,
       });
     } catch (err) {
-      console.error("Error processing file:", err);
-      res.status(500).json({ success: false, error: "Error processing file" });
+      next(err);
     }
   }
 );
@@ -86,11 +84,15 @@ app.get("/download/:filename", (req, res) => {
       console.error("Error downloading file:", err);
       res.status(500).send("Error downloading file");
     } else {
-      fs.unlink(filePath, (err) => {
-        if (err) console.error("Error deleting file:", err);
-      });
+      fs.unlink(filePath).catch(console.error);
     }
   });
+});
+
+// General error handling middleware
+app.use((err, req, res, next) => {
+  console.error("Error processing file:", err);
+  res.status(500).json({ success: false, error: "Error processing file" });
 });
 
 const PORT = process.env.PORT || 3002;

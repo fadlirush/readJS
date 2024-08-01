@@ -13,11 +13,12 @@
       text-decoration: none;
     }
     body {
-      padding: 0 5vw;
+      padding: 2vh 5vw;
       background: #3d3d3d;
       color: white;
     }
-    button {
+    button,
+    a {
       padding: 1vh 2vw;
       border: none;
       cursor: pointer;
@@ -38,7 +39,15 @@
       color: white;
     }
     label {
-      font-size: 20pt;
+      font-size: 16pt;
+    }
+    .file-input {
+      font-size: 16pt;
+      padding: 1vh 2vw;
+    }
+    .file-input-label {
+      font-size: 18pt;
+      font-weight: bold;
     }
   </style>
   <body>
@@ -50,19 +59,30 @@
       enctype="multipart/form-data"
     >
       <div>
-        <label for="file">File yang Ingin di proses:</label>
-        <input type="file" name="file" required />
+        <label for="file" class="file-input-label"
+          >File yang Ingin di proses:</label
+        >
+        <input type="file" name="file" id="file" class="file-input" required />
       </div>
       <br />
       <div>
-        <label for="comparisonFile">File Pembanding:</label>
-        <input type="file" name="comparisonFile" required />
+        <label for="comparisonFile" class="file-input-label"
+          >File Pembanding:</label
+        >
+        <input
+          type="file"
+          name="comparisonFile"
+          id="comparisonFile"
+          class="file-input"
+          required
+        />
       </div>
       <br />
       <button type="submit">Upload</button>
     </form>
-
-    <h2>Deleted Product Handler</h2>
+    <br />
+    <hr />
+    <h1>Deleted Product Handler</h1>
     <form
       id="addNewRowsForm"
       action="/addNewRows"
@@ -70,13 +90,21 @@
       enctype="multipart/form-data"
     >
       <div>
-        <label for="file">UNVGENIN File:</label>
-        <input type="file" name="file" required />
+        <label for="file" class="file-input-label">UNVGENIN File:</label>
+        <input type="file" name="file" id="file" class="file-input" required />
       </div>
       <br />
       <div>
-        <label for="notificationFile">Notification File:</label>
-        <input type="file" name="notificationFile" required />
+        <label for="notificationFile" class="file-input-label"
+          >Notification File:</label
+        >
+        <input
+          type="file"
+          name="notificationFile"
+          id="notificationFile"
+          class="file-input"
+          required
+        />
       </div>
       <br />
       <button type="submit">Process</button>
