@@ -1,4 +1,0 @@
-This is a line with the keyword_to_remove.
-This line does not contain the keyword.
-Another line with the keyword_to_remove should be removed.
-This line should stay.
