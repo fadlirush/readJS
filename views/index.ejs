@@ -1,0 +1,159 @@
+<%- include('partials/h')  %>
+    <a id="out" href="/logout">Logout</a>
+
+    <h1>SFA Remover | Reason Id</h1>
+    <form
+      id="uploadForm"
+      action="/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label for="file" class="file-input-label">UNVGENIN File</label>
+        <br><br>
+        <input type="file" name="file" id="file" class="file-input" required />
+      </div>
+      <div>
+        <label for="comparisonFile" class="file-input-label">Notification File</label>
+        <br> <br>
+        <input
+          type="file"
+          name="comparisonFile"
+          id="comparisonFile"
+          class="file-input"
+          required
+        />
+      </div>
+      <button type="submit">Upload</button>
+    </form>
+    <br />
+    <div id="result" style="display: none">
+      <a class="tengah" id="downloadLink" href="#" download>Download File</a>
+      <p>Baris Dihapus <span id="removedLinesCount"></span></p>
+      <p>SO dihapus -> <span id="removedKeywords"></span></p><p>
+        SO Tersisa -> <span id="remainingKeywords"></span></p>
+    </div>
+    <br>
+    <h1>Kode Produk yang Terhapus</h1>
+    <form
+      id="addNewRowsForm"
+      action="/addNewRows"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div>
+        <label for="file" class="file-input-label">UNVGENIN File</label>
+        <br><br>
+        <input type="file" name="file" id="file" class="file-input" required />
+      </div>
+      <div>
+        <label for="notificationFile" class="file-input-label"
+          >Notification File</label
+        >
+        <br><br>
+        <input
+          type="file"
+          name="notificationFile"
+          id="notificationFile"
+          class="file-input"
+          required
+        />
+      </div>
+      <button type="submit">Process</button>
+    </form>
+    <div id="addNewRowsResult" style="display: none">
+      <a style="padding: 1vh" id="addNewRowsDownloadLink" href="#" download
+        >Download Processed File</a
+      >
+    </div>
+    <br />
+    <h1>Return Handler</h1>
+<form
+  id="returnhandler"
+  action="/retur"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <div>
+    <label for="file" class="file-input-label">UNVGENIN File</label>
+    <br><br>
+    <input type="file" name="file" id="file" class="file-input" required />
+  </div>
+  <button type="submit">Process</button>
+</form>
+<br><br>
+<div id="result" style="display: none; text-align: center;">
+  <a style="padding: 1vh" id="downloadLink" href="#" download>Download File</a>
+</div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(this);
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            document.getElementById("removedLinesCount").textContent =
+              result.removedLinesCount;
+            document.getElementById("removedKeywords").textContent =
+              result.removedKeywords.join(", ");
+            document.getElementById("remainingKeywords").textContent =
+              result.remainingKeywords.join(", ");
+            document.getElementById("downloadLink").href = result.downloadUrl;
+
+            document.getElementById("result").style.display = "block";
+          } else {
+            alert("Error processing file: " + result.error);
+          }
+        });
+
+      document
+        .getElementById("addNewRowsForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+          const response = await fetch("/addNewRows", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+          if (result.success) {
+            document.getElementById("addNewRowsDownloadLink").href =
+              result.downloadUrl;
+            document.getElementById("addNewRowsResult").style.display = "block";
+          } else {
+            alert("Error processing file: " + result.error);
+          }
+        });
+
+        document.getElementById('returnhandler').onsubmit = async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    const response = await fetch(this.action, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      const downloadLink = document.getElementById('downloadLink');
+      downloadLink.href = result.downloadUrl;
+      document.getElementById('result').style.display = 'block';
+    } else {
+      alert('File processing failed.');
+    }
+  };
+    </script>
+  </body>
+</html>

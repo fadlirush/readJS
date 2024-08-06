@@ -1,15 +1,21 @@
 {
   "name": "readjs",
   "version": "1.0.0",
-  "description": "",
+  "description": "my shit",
   "main": "process.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
     "multer": "^1.4.5-lts.1"
   }
 }

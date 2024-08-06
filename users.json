@@ -1,0 +1,27 @@
+[
+    {
+      "username": "fadli",
+      "password": "$2b$10$aWBoQHZ7VzZCs3a1a1ox8e0bHQyAfAOOf6H6q05GqSUNOTEMyuiwq"
+    },
+    {
+      "username": "support",
+      "password": "$2b$10$Mef3JS7zKNcp/2yM47nKMeUTnrapStRKHqTjMTnXd2Bh72B7it/oa"
+    },
+    {
+      "username":"fakturispdl",
+      "password":"$2b$10$BOteG72fu3huBrf97cCOg.azVFnFcOL.XoGCgg0daUn79O/pMtpw2"
+    },
+    {
+      "username":"crbfakturis",
+      "password":"$2b$10$u0oHXf18lE4ylnNhR9/ynOqXrxNMHN9IFCDfPj6G1gnsIy6mQjswG"
+    },
+	{
+	  "username":"tamu1qaz",
+	  "password":"$2b$10$fzsGps7YmdwYwaM/Jyef8ebSmXeTMpelNHoaxj/d08ariGWBP3Wv6"
+	},
+	{
+	  "username":"csrfakturis",
+	  "password":"$2b$10$qOtxdqpX5EqzW4CsmwzuE.MfcY5Lyx7DYW8KgeOHpp/LBYhsU5ugW"
+	}
+]
+  

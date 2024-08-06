@@ -1,0 +1,18 @@
+<%- include('partials/h')  %> 
+<form id="l" action="/login" method="post">
+    <h1>Login Mr Patrick</h1>
+    
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>  <!-- Menampilkan pesan error -->
+    <% } %>
+    
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Login</button>
+
+</form>
+<p style="text-align: center; margin-top: 5vh;"><a style="background: none; color: white; box-shadow: none;" href="/disclaimer">Baca Disclaimer</a></p>
+</body>
+</html>
