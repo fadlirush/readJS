@@ -8,111 +8,214 @@
   </head>
   <style>
     * {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      border-radius: 50px;
+      font-family: sans-serif;
+      border-radius: 50px; 
       text-decoration: none;
+      list-style: none;
     }
     body {
       padding: 2vh 5vw;
-      background: rgb(27, 27, 27);
-      color: white;
-      margin-bottom: 10vh;
+      background: #1b1b1b;
+      margin-bottom: 30vh;
     }
+   
     button,
-    a {
-      padding: 1vh 2vw;
+    a{
+      padding: 2vh 2vw;
       border: none;
       cursor: pointer;
-      font-weight: bold;
+      font-size: large;
+      height: max-content;
       transition: 0.1s;
       box-shadow: 2px 0px 10px rgb(192, 192, 192);
     }
-    button:hover {
+    .b, button, a, .back-link{
+      font-weight: bold;
+    }
+    button:focus, #initialContent button {
       background: black;
-      color: white;
+    }
+    nav a, #under{
+      padding: 1vh 2vw;
+    }
+    #initialContent button:focus, #under{
+      background: #007bff;
+    }
+    nav a:hover{
+      background: #fff;
+      box-shadow: #60657a 0px 0px 10px;
     }
     a {
       background: white;
-      color: black;
     }
     a:hover {
       background: black;
-      color: white;
-    }
-    label {
-      font-size: 18pt;
     }
     .file-input {
       font-size: 16pt;
-      padding: 1vh 2vw;
+      padding: 2vh 2vw;
     }
-    .file-input-label {
-      font-size: 14pt;
-      font-weight: bold;
+    .grid {
+      display: grid;
     }
-    form{
+    .form-container{
+      grid-template-columns: auto auto;
+      align-items: center;
+    }
+    form {
       display: grid;
       gap: 3vh;
       background: #363945;
       justify-content: center;
-      padding: 2vh;
       box-shadow: 0 10px 10px #60657a;
-      transition: ease-in-out 0.3s;
+      transition: ease-in-out 0.2s;
     }
-    form:hover{
-      transform: translateY(15px);
-      box-shadow: none;
+    .modal, form{
+      padding: 2vh;
     }
-    form h1{
+    form:focus-within {
+      border: #fff 2px solid;
+    }
+    h1 {
+      text-decoration: underline;
+    }
+    form h1, .back-link, h2 {
       text-align: center;
+      text-decoration: none;
     }
-    #l{
+    #under {
+      text-decoration: none;
+      width: max-content;
+    }
+    #l {
       border: none;
     }
-    form input{
-      padding: .5vh 1vw;
+    form input {
+      padding: 1.5vh 1vw;
       border: 1px solid;
       font-size: 16pt;
       outline: none;
     }
-    form input:focus{
+    form input::placeholder {
+      font-size: 11pt;
+    }
+    .hint{
+      font-size: medium;
+    }
+    form input:focus {
       box-shadow: 0 0 10px rgb(255, 255, 255);
     }
-    form button{
+    form button {
       justify-self: center;
     }
-    form div{
+    .flex, form div, ul{
       display: flex;
+      /* border: 2px solid; */
       align-items: center;
+      /* padding: 0; */
+    }
+    .login{
+      justify-content: space-evenly;
+    }
+    .between{
+      justify-content: space-between;
+    }
+    .log{
+      grid-template-columns: auto auto;
+    }
+    form div, ul {
       gap: 2vh;
     }
-    #out{
+    .bungkus{
+      gap: 5vh;
+    }
+    #out {
       float: right;
     }
     /* disclaimer */
     .container {
-        max-width: 60%;
-        margin: 50px auto;
-        padding: 20px;
-            background: #363945;
-        }
-        p {
-            line-height: 1.8;
-            font-size: large;
-        }
-        ol {
-            margin-left: 20px;
-        }
-        li {
-            margin-bottom: 15px;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-        }
+      max-width: 60%;
+      margin: 50px auto;
+      padding: 20px;
+      background: #363945;
+    }
+    p {
+      line-height: 1.8;
+      font-size: large;
+    }
+    li {
+      margin-bottom: 15px;
+    }
+    .back-link {
+      display: block;
+      margin-top: 30px;
+      color: #007bff;
+    }
+    .mancode, a, button, #under{
+      border-radius: 15px;
+    }
+    table{
+      border: 1px solid #60657a;
+      padding: 0 1vw;
+      border-collapse: collapse;
+      border-radius: 25px;  
+    }
+    thead{
+      background: #363945;
+    }
+    .link,.modal, thead, button:focus, #initialContent button, nav a, body, a:hover{
+      color: #fff;
+    }
+    thead th{
+      border-radius: 0;
+      padding: 1vh;
+    }
+    tbody td{
+      border: 1px solid #60657a4f;
+      padding: 1vh;
+    }
+    tbody tr:first-child{
+      display: none;
+    }
+    .modal p, .modal h3, .modal h2, a, #searchResults, nav a:hover, .close button {
+      color: black;
+    }
+    #logoutForm, .modal button, nav a, .link{
+      background: none;
+      box-shadow: none;
+    }
+    hr{
+      color: rgba(128, 128, 128, 0.203);
+    }
+    #searchResults{
+      overflow-x: scroll;
+      scrollbar-width: thin;
+      scroll-behavior: smooth;
+      border-radius: 0;
+      padding: 1vh;
+      background: rgba(128, 128, 128, 0.114);
+      height: 20vh;
+    }
+    /* Add this to your existing styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+.grey{
+  color: rgba(255, 255, 255, 0.295);
+}
+.modal {
+    z-index: 1000;
+    background: #eff1fd;
+}
+    .close {
+     font-family: Arial;
+     font-size: 24pt;
+    }
   </style>
   <body>
