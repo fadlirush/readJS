@@ -1,102 +1,169 @@
 <%- include('partials/h')  %>
-    <a id="out" href="/logout">Logout</a>
+<div id="modalOverlay" class="overlay" style="display:none;"></div>
+    <div id="initialModal" class="modal" style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);">
+      <h2>Selamat Datang😁</h2>
+      <div id="initialContent">
+        <h3>Gerbang Analisis</h3>
+        <p>Unggah file errornya untuk menemukan menu yang cocok</p>
+          <button id="errorChecker">Cek Galat</button>
+      </div>
+    </div>
+    <div class="flex between">
+        <button id="mainErrorChecker">Cek Galat</button>
+      <form id="logoutForm" action="/logout" method="post">
+        <button type="submit" id="out">Keluar</button>
+      </form>
+    </div>
 
-    <h1>SFA Remover | Reason Id</h1>
-    <form
-      id="uploadForm"
-      action="/upload"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <div>
-        <label for="file" class="file-input-label">UNVGENIN File</label>
-        <br><br>
-        <input type="file" name="file" id="file" class="file-input" required />
+    <div id="errorModal" class="fine modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);">
+      <div class="flex between">
+        <h3>Gerbang Analisis</h3>
+        <button class="close" onclick="closeModal()">✖</button>
       </div>
-      <div>
-        <label for="comparisonFile" class="file-input-label">Notification File</label>
-        <br> <br>
-        <input
-          type="file"
-          name="comparisonFile"
-          id="comparisonFile"
-          class="file-input"
-          required
-        />
-      </div>
-      <button type="submit">Upload</button>
-    </form>
-    <br />
-    <div id="result" style="display: none">
-      <a class="tengah" id="downloadLink" href="#" download>Download File</a>
-      <p>Baris Dihapus <span id="removedLinesCount"></span></p>
-      <p>SO dihapus -> <span id="removedKeywords"></span></p><p>
-        SO Tersisa -> <span id="remainingKeywords"></span></p>
+      <div id="errorContent"></div>
     </div>
-    <br>
-    <h1>Kode Produk yang Terhapus</h1>
-    <form
-      id="addNewRowsForm"
-      action="/addNewRows"
-      method="post"
-      enctype="multipart/form-data"
-    >
+    
+    <div class="bungkus grid">
       <div>
-        <label for="file" class="file-input-label">UNVGENIN File</label>
-        <br><br>
-        <input type="file" name="file" id="file" class="file-input" required />
+        <h1>Ke Nexsoft Distribution 6</h1>
+        <h3>Penghapus Nomor😊</h3>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" class="form-container">
+          <div class="grid">
+            <div>
+              <label for="file" class="file-input-label">File Orderan</label>
+              <input type="file" name="file" id="file" class="file-input" required />
+            </div>
+            <div>
+              <label for="comparisonFile" class="file-input-label">File Notifikasi</label>
+              <input type="file" name="comparisonFile" id="comparisonFile" class="file-input" />
+            </div>
+            <div>
+              <label for="manualSalesOrders">Manual Input (Hapus)</label>
+              <input type="text" class="mancode" id="manualSalesOrders" name="manualSalesOrders" placeholder="SO123456789, SO...">
+            </div>
+            <div>
+              <label for="keepSalesOrders">Manual Input (Simpan)</label>
+              <input type="text" class="mancode" id="keepSalesOrders" name="keepSalesOrders" placeholder="SO123456789, SO...">
+            </div>
+          </div>
+          <div class="grid">
+            <button type="submit">Proses</button>
+            <button type="submit">Lihat Detail</button>
+          </div>
+        </form>
+        <div id="uploadFormResult" style="display: none">
+          <a class="tengah" id="uploadFormDownloadLink" href="#" download>Unduh File</a>
+          <p><span id="removedLinesCount"></span> Faktur Dihapus </p>
+          <p>Faktur Tersisa</p>
+          <p>SO dihapus -> <span id="removedKeywords"></span></p><p>
+            SO Tersisa -> <span id="remainingKeywords"></span></p>
+        </div>
       </div>
+
       <div>
-        <label for="notificationFile" class="file-input-label"
-          >Notification File</label
+        <h3>Penambah Baris😉</h3>
+        <form
+          id="addNewRowsForm"
+          action="/addNewRows"
+          method="post"
+          enctype="multipart/form-data"
+                class="form-container"
         >
-        <br><br>
-        <input
-          type="file"
-          name="notificationFile"
-          id="notificationFile"
-          class="file-input"
-          required
-        />
+        <div class="grid">
+
+          <div>
+            <label for="file" class="file-input-label">File Orderan</label>
+            <input type="file" name="file" id="file" class="file-input" required />
+          </div>
+          <div>
+            <label for="notificationFile" class="file-input-label"
+              >File Error</label
+            >
+            <input
+              type="file"
+              name="notificationFile"
+              id="notificationFile"
+              class="file-input"
+              required
+            />
+          </div>
+        </div>
+
+          <button type="submit">Proses</button>
+        </form>
+        <div id="addNewRowsResult" style="display: none">
+          <a style="padding: 1vh" id="addNewRowsDownloadLink" href="#" download
+            >Unduh File Hasil</a
+          >
+        </div>
       </div>
-      <button type="submit">Process</button>
-    </form>
-    <div id="addNewRowsResult" style="display: none">
-      <a style="padding: 1vh" id="addNewRowsDownloadLink" href="#" download
-        >Download Processed File</a
-      >
+      <div>
+        <h3>Sebelum Unggah Retur😎</h3>
+        <form
+          id="returnhandler"
+          action="/retur"
+          method="post"
+          class="form-container"
+          enctype="multipart/form-data"
+        >
+        <div class="grid">
+
+          <div>
+            <label for="file" class="file-input-label">File Retur</label>
+            <input type="file" name="file" id="file" class="file-input" required />
+          </div>
+        </div>
+
+          <button type="submit">Proses</button>
+        </form>
+
+        <div id="returnerResult" style="display: none; text-align: center;">
+          <a style="padding: 1vh" id="returnerDownloadLink" href="#" download>Download File</a>
+        </div>
+      </div>
+      <div>
+        <h1>Ke Sistem Internal</h1>
+        <h3>Penghapus Kode Outlet😁</h3>
+        <form action="/removeCustomerLines" method="post" enctype="multipart/form-data" class="form-container">
+          <div class="grid">
+
+          <div>
+            <label for="importFile">File Orderan</label>
+            <input type="file" id="importFile" name="importFile" required>
+          </div>
+          <div>
+            <label for="errorFile">File Error</label>
+            <input type="file" id="errorFile" name="errorFile">
+          </div>
+          <div>
+            <label for="manualCustomerCodes">Manual Input</label>
+            <input type="text" class="mancode" id="manualCustomerCodes" name="manualCustomerCodes" placeholder="Example : 12345, 67890">
+          </div>
+        </div>
+
+          <div class="grid">
+            <button type="submit" name="action" value="process">Proses</button>
+            <button type="submit" name="action" value="view">Lihat Detail</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <br />
-    <h1>Return Handler</h1>
-<form
-  id="returnhandler"
-  action="/retur"
-  method="post"
-  enctype="multipart/form-data"
->
-  <div>
-    <label for="file" class="file-input-label">UNVGENIN File</label>
-    <br><br>
-    <input type="file" name="file" id="file" class="file-input" required />
-  </div>
-  <button type="submit">Process</button>
-</form>
-<br><br>
-<div id="result" style="display: none; text-align: center;">
-  <a style="padding: 1vh" id="downloadLink" href="#" download>Download File</a>
-</div>
 
     <script>
-      document
-        .getElementById("uploadForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
+      document.getElementById('logoutForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await fetch('/logout', { method: 'POST' });
+        window.location.href = '/';
+      });
 
-          const formData = new FormData(this);
-          const response = await fetch("/upload", {
-            method: "POST",
-            body: formData,
-          });
+
+      document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData,
+        });
 
           const result = await response.json();
 
@@ -107,9 +174,8 @@
               result.removedKeywords.join(", ");
             document.getElementById("remainingKeywords").textContent =
               result.remainingKeywords.join(", ");
-            document.getElementById("downloadLink").href = result.downloadUrl;
-
-            document.getElementById("result").style.display = "block";
+            document.getElementById("uploadFormDownloadLink").href = result.downloadUrl;
+            document.getElementById("uploadFormResult").style.display = "block";
           } else {
             alert("Error processing file: " + result.error);
           }
@@ -134,26 +200,148 @@
           }
         });
 
-        document.getElementById('returnhandler').onsubmit = async function (event) {
-    event.preventDefault();
+      document.getElementById('returnhandler').onsubmit = async function (event) {
+          event.preventDefault();
 
-    const formData = new FormData(this);
+        const formData = new FormData(this);
 
-    const response = await fetch(this.action, {
-      method: 'POST',
-      body: formData,
-    });
+        const response = await fetch(this.action, {
+          method: 'POST',
+          body: formData,
+        });
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if (result.success) {
-      const downloadLink = document.getElementById('downloadLink');
-      downloadLink.href = result.downloadUrl;
-      document.getElementById('result').style.display = 'block';
-    } else {
-      alert('File processing failed.');
-    }
-  };
+        if (result.success) {
+          const downloadLink = document.getElementById('returnerDownloadLink');
+          downloadLink.href = result.downloadUrl;
+          document.getElementById('returnerResult').style.display = 'block';
+        } else {
+          alert('File processing failed.');
+        }
+      };
+
     </script>
+    <script>
+      const over = document.getElementById('modalOverlay');
+      const initialmodal = document.getElementById('initialModal')
+      const mainErrorChecker = document.getElementById('mainErrorChecker');
+      const errorChecker = document.getElementById('errorChecker');
+      const errorModal = document.getElementById('errorModal');
+    window.onload = function() {
+        initialmodal.style.display = 'block';
+        over.style.display = 'block';
+    }
+    over.onclick = function() {
+      initialmodal.style.display = 'none';
+      over.style.display = 'none';
+      errorModal.style.display = 'none';
+    }
+
+    function handleErrorCheck() {
+        initialmodal.style.display = 'none';
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.onchange = async function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const errorContent = document.getElementById('errorContent');
+                
+                // Pwttern
+                const sfaPattern = /No invoice \(SO\d{9,10}\) Sudah Ada/;
+                const sfaMatches = [...new Set(content.match(/SO\d+/g))] || [];                
+                const customerPattern = /Kode customer \d+ tidak ditemukan/;
+                const customerMatches = [...new Set(content.match(/\d+(?= tidak ditemukan)/g))] || [];
+                const reasonPattern = /Pada Baris Ke \d+ Kolom reasonID tidak boleh kosong/;
+                const reasonMatches = [...new Set(content.match(/Baris Ke \d+/g))] || [];
+                const masterPattern = /salesorderNumber \(SO\d{9,10}\) Data Tidak Ada Di Master/;
+                const masterMatches = [...new Set(content.match(/(?<=\()SO\d+(?=\))/g))] || [];
+                const itemPattern = /Kode item (\d+) tidak ditemukan/g;
+                const itemMatches = [...new Set(Array.from(content.matchAll(itemPattern)).map(match => match[1]))] || [];
+                                
+                if (itemMatches.length > 0) {
+                    errorContent.innerHTML = `
+                        <p>Ditemukan ${itemMatches.length} Kode barang hilang pada Sales Order</p>
+                        <p>${itemMatches.join(', ')}</p>
+                        <p>Mohon unggah File Orderan untuk mencari nomor pesanan</p>
+                        <input type="file" id="importFileSearch" />
+                        <div id="searchResults"></div>
+                        <p>Mohon gunakan menu <strong>Penghapus Nomor</strong> untuk memproses permintaan ini😊</p>
+                    `;
+
+                    document.getElementById('importFileSearch').onchange = function(e) {
+                        const importFile = e.target.files[0];
+                        const importReader = new FileReader();
+
+                        importReader.onload = function(e) {
+                            const importContent = e.target.result;
+                            const lines = importContent.split('\n');
+                            const matchingSO = [];
+
+                            lines.forEach(line => {
+                                const columns = line.split('|');
+                                if (itemMatches.includes(columns[27])) {
+                                    matchingSO.push(columns[4]);
+                                }
+                            });
+
+                            document.getElementById('searchResults').innerHTML = `
+                                <p>Ditemukan nomor orderan dengan kode barang ${itemMatches.join(', ')}</p>
+                                <p>${[...new Set(matchingSO)].join(', ')}</p>
+                            `;
+                        };
+
+                        importReader.readAsText(importFile);
+                    };
+                } else if (sfaPattern.test(content)) {
+                    errorContent.innerHTML = `
+                        <p>Ditemukan ${sfaMatches.length} nomor orderan sudah ada di master</p>
+                        <div id="searchResults">${sfaMatches.join(', ')}</div>
+                        <p>Mohon gunakan menu <strong>Penghapus Nomor</strong> untuk memproses permintaan ini😊</p>
+                    `;
+                } else if (customerPattern.test(content)) {
+                    errorContent.innerHTML = `
+                        <p>Ditemukan ${customerMatches.length} kode outlet</p>
+                        <div id="searchResults">${customerMatches.join(', ')}</div>
+                        <p>Mohon gunakan menu <strong>Penghapus Kode Outlet</strong> untuk memproses permintaan ini😁</p>
+                    `;
+                } else if (reasonPattern.test(content)) {
+                    errorContent.innerHTML = `
+                        <p>Ditemukan error ReasonID pada baris</p>
+                        <div id="searchResults">${reasonMatches.join(', ')}</div>
+                        <p>Mohon gunakan menu <strong>Penghapus Nomor</strong> untuk memproses permintaan ini😊</p>
+                    `;
+                } else if (masterPattern.test(content)) {
+                    errorContent.innerHTML = `
+                        <p>Ditemukan ${masterMatches.length} Orderan Belum diinputkan</p>
+                        <div id="searchResults">${masterMatches.join(', ')}</div>
+                        <p>Tolong Input Ulang Sales Order tersebut😉</p>
+                    `;
+                } else {
+                    errorContent.innerHTML = `
+                        <p>Pola error tidak ditemukan pada file yang di unggah😱</p>
+                        <p>Mohon cek isi file nya lalu coba kembali😁</p>
+                        <p>Buat permintaan perbaikan via:</p>
+                        <p>Email: fadliruswandi65@gmail.com</p>
+                    `;
+                }
+                
+                errorModal.style.display = 'block';
+            };
+            
+            reader.readAsText(file);
+        };
+        fileInput.click();
+    };
+    mainErrorChecker.onclick = handleErrorCheck;
+    errorChecker.onclick = handleErrorCheck;
+    function closeModal() {
+        errorModal.style.display = 'none';
+        over.style.display = 'none';
+    }
+</script>
   </body>
 </html>
