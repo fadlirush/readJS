@@ -5,7 +5,8 @@ async function processFile(
   inputFilePath,
   outputFilePath,
   comparisonKeywords,
-  errorLines
+  errorLines,
+  keepKeywords
 ) {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(inputFilePath);
@@ -20,25 +21,48 @@ async function processFile(
     let removedKeywords = [];
     let remainingKeywords = new Set();
     let lineNumber = 0;
+    let isFirstLine = true;
 
     rl.on("line", (line) => {
       lineNumber++;
-      const keywordsInLine = extractKeywords(line);
-      const shouldRemove = keywordsInLine.some((keyword) =>
-        comparisonKeywords.has(keyword)
-      );
 
-      if (!shouldRemove) {
-        if (errorLines.has(lineNumber)) {
-          line += "GDRTN8";
-        }
+      // Selalu tulis baris pertama
+      if (isFirstLine) {
         writeStream.write(line + "\n");
-        keywordsInLine.forEach((kw) => remainingKeywords.add(kw));
-      } else {
-        removedLinesCount++;
-        removedKeywords.push(
-          ...keywordsInLine.filter((keyword) => comparisonKeywords.has(keyword))
+        isFirstLine = false;
+        return;
+      }
+
+      const keywordsInLine = extractKeywords(line);
+
+      if (keepKeywords && keepKeywords.size > 0) {
+        const shouldKeep = keywordsInLine.some((keyword) =>
+          keepKeywords.has(keyword)
         );
+        if (shouldKeep) {
+          if (errorLines.has(lineNumber)) {
+            line += "GDRTN8";
+          }
+          writeStream.write(line + "\n");
+          keywordsInLine.forEach((kw) => remainingKeywords.add(kw));
+        } else {
+          removedLinesCount++;
+          removedKeywords.push(...keywordsInLine);
+        }
+      } else {
+        const shouldRemove = keywordsInLine.some((keyword) =>
+          comparisonKeywords.has(keyword)
+        );
+        if (!shouldRemove) {
+          if (errorLines.has(lineNumber)) {
+            line += "GDRTN8";
+          }
+          writeStream.write(line + "\n");
+          keywordsInLine.forEach((kw) => remainingKeywords.add(kw));
+        } else {
+          removedLinesCount++;
+          removedKeywords.push(...keywordsInLine);
+        }
       }
     });
 
